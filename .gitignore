@@ -1,0 +1,4 @@
+"# Ignora archivos .pptx y .mp4" 
+*.pptx
+*.mp4
+*.tmp

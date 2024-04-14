@@ -35,7 +35,7 @@ CREATE TABLE `weather` (
   `pressure` double NOT NULL,
   `visib` double NOT NULL,
   `time_hour` datetime NOT NULL,
-  PRIMARY KEY (`origin`, `year`, `month`, `day`, `hour`, `temp`),
+  PRIMARY KEY (`origin`, `year`, `month`, `day`, `hour`, `time_hour`),
   CONSTRAINT `fk_weather_origin` FOREIGN KEY (`origin`) REFERENCES `airports` (`faa`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -71,12 +71,13 @@ CREATE TABLE `flights` (
   `dest` varchar(3) NOT NULL,
   `air_time` double DEFAULT NULL,
   `distance` int NOT NULL,
-  `hour` int DEFAULT NULL,
+  `hour` int NOT NULL,
   `minute` int DEFAULT NULL,
   `time_hour` datetime NOT NULL,
-  PRIMARY KEY (`year`, `month`, `day`, `carrier`, `flight`, `origin`),
+  PRIMARY KEY (`year`, `month`, `day`, `hour`,`flight`, `carrier`),
   CONSTRAINT `fk_flights_carrier` FOREIGN KEY (`carrier`) REFERENCES `airlines` (`carrier`),
-  #CONSTRAINT `fk_flights_tailnum` FOREIGN KEY (`tailnum`) REFERENCES `planes` (`tailnum`),
-  CONSTRAINT `fk_flights_origin` FOREIGN KEY (`origin`) REFERENCES `airports` (`faa`)
-  #CONSTRAINT `fk_flights_dest` FOREIGN KEY (`dest`) REFERENCES `airports` (`faa`)
+  CONSTRAINT `fk_flights_tailnum` FOREIGN KEY (`tailnum`) REFERENCES `planes` (`tailnum`),
+  CONSTRAINT `fk_flights_origin` FOREIGN KEY (`origin`) REFERENCES `airports` (`faa`),
+  CONSTRAINT `fk_flights_dest` FOREIGN KEY (`dest`) REFERENCES `airports` (`faa`),
+  CONSTRAINT `fk_flights_weather` FOREIGN KEY (`origin`, `year`, `month`, `day`, `hour`, `time_hour`) REFERENCES `weather` (`origin`, `year`, `month`, `day`, `hour`, `time_hour`)
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
